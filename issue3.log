@@ -1,0 +1,440 @@
+Microsoft Windows [Version 10.0.17763.1339]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\AB011PJ>cd C:\test-code\20200817\issue3\customer-contact-history-system-mce
+
+C:\test-code\20200817\issue3\customer-contact-history-system-mce>C:\apache-maven-3.5.0\bin\mvn clean package
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building customer-contact-history-system-mce 1.0
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ customer-contact-history-system-mce ---
+[INFO]
+[INFO] --- wildfly-maven-plugin:2.0.2.Final:undeploy (undeploy) @ customer-contact-history-system-mce ---
+[INFO] JBoss Threads version 2.3.2.Final
+[INFO] JBoss Remoting version 5.0.8.Final
+[INFO] XNIO version 3.6.5.Final
+[INFO] XNIO NIO Implementation Version 3.6.5.Final
+[INFO] ELY00001: WildFly Elytron version 1.6.0.Final
+[INFO]
+[INFO] --- maven-help-plugin:3.2.0:active-profiles (show-profiles) @ customer-contact-history-system-mce ---
+[INFO]
+Active Profiles for Project 'com.absa.amol:customer-contact-history-system-mce:war:1.0':
+
+The following profiles are active:
+
+ - aro (source: external)
+ - development (source: external)
+ - fuse-development (source: external)
+ - wildfly-home (source: com.absa:amol-aro-parent:1.2)
+ - wildfly (source: com.absa:amol-aro-parent:1.2)
+ - fuse (source: com.absa:amol-aro-parent:1.2)
+ - development (source: com.absa:amol-aro-parent:1.2)
+ - jax-ws (source: com.absa:amol-aro-parent:1.2)
+
+
+
+[INFO]
+[INFO] --- maven-enforcer-plugin:3.0.0-M3:enforce (enforce) @ customer-contact-history-system-mce ---
+[INFO] Adding ignore: module-info
+[INFO] Adding ignore: META-INF/versions/*/module-info
+[WARNING] Rule 9: org.apache.maven.plugins.enforcer.BanDuplicateClasses failed with message:
+Duplicate classes found:
+
+  Found in:
+    javax.xml.soap:javax.xml.soap-api:jar:1.4.0:compile
+    jakarta.xml.soap:jakarta.xml.soap-api:jar:1.4.2:provided
+  Duplicate classes:
+    javax/xml/soap/SOAPEnvelope.class
+    javax/xml/soap/AttachmentPart.class
+    javax/xml/soap/SOAPPart.class
+    javax/xml/soap/SOAPBodyElement.class
+    javax/xml/soap/FactoryFinder.class
+    javax/xml/soap/MessageFactory.class
+    javax/xml/soap/Text.class
+    javax/xml/soap/SOAPBody.class
+    javax/xml/soap/Name.class
+    javax/xml/soap/SOAPFault.class
+    javax/xml/soap/SOAPElement.class
+    javax/xml/soap/SOAPConstants.class
+    javax/xml/soap/SAAJMetaFactory.class
+    javax/xml/soap/SOAPConnectionFactory.class
+    javax/xml/soap/MimeHeader.class
+    javax/xml/soap/SOAPException.class
+    javax/xml/soap/SOAPConnection.class
+    javax/xml/soap/SOAPFaultElement.class
+    javax/xml/soap/DetailEntry.class
+    javax/xml/soap/SOAPHeaderElement.class
+    javax/xml/soap/SOAPFactory.class
+    javax/xml/soap/MimeHeaders$MatchingIterator.class
+    javax/xml/soap/SOAPMessage.class
+    javax/xml/soap/ServiceLoaderUtil$ExceptionHandler.class
+    javax/xml/soap/ServiceLoaderUtil.class
+    javax/xml/soap/SOAPHeader.class
+    javax/xml/soap/SOAPElementFactory.class
+    javax/xml/soap/MimeHeaders.class
+    javax/xml/soap/Node.class
+    javax/xml/soap/FactoryFinder$1.class
+    javax/xml/soap/Detail.class
+    javax/xml/soap/SAAJResult.class
+    javax/xml/soap/FactoryFinder$2.class
+
+  Found in:
+    jakarta.platform:jakarta.jakartaee-api:jar:8.0.0:provided
+    org.jboss.spec.javax.annotation:jboss-annotations-api_1.3_spec:jar:1.0.1.Final-redhat-1:test
+  Duplicate classes:
+    javax/annotation/security/RunAs.class
+    javax/annotation/security/PermitAll.class
+    javax/annotation/Generated.class
+    javax/annotation/security/RolesAllowed.class
+    javax/annotation/Resources.class
+    javax/annotation/security/DeclareRoles.class
+    javax/annotation/PreDestroy.class
+    javax/annotation/Priority.class
+    javax/annotation/ManagedBean.class
+    javax/annotation/Resource.class
+    javax/annotation/security/DenyAll.class
+    javax/annotation/sql/DataSourceDefinition.class
+    javax/annotation/Resource$AuthenticationType.class
+    javax/annotation/PostConstruct.class
+    javax/annotation/sql/DataSourceDefinitions.class
+
+  Found in:
+    jakarta.jws:jakarta.jws-api:jar:2.1.0:provided
+    org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.3:compile
+  Duplicate classes:
+    javax/jws/soap/SOAPBinding$Style.class
+    javax/jws/Oneway.class
+    javax/jws/soap/SOAPBinding.class
+    javax/jws/WebMethod.class
+    javax/jws/soap/InitParam.class
+    javax/jws/soap/SOAPMessageHandlers.class
+    javax/jws/soap/SOAPMessageHandler.class
+    javax/jws/WebParam.class
+    javax/jws/HandlerChain.class
+    javax/jws/WebParam$Mode.class
+    javax/jws/WebResult.class
+    javax/jws/soap/SOAPBinding$Use.class
+    javax/jws/WebService.class
+    javax/jws/soap/SOAPBinding$ParameterStyle.class
+
+  Found in:
+    javax.xml.bind:jaxb-api:jar:2.3.0:compile
+    jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:provided
+  Duplicate classes:
+    javax/xml/bind/annotation/XmlValue.class
+    javax/xml/bind/ContextFinder.class
+    javax/xml/bind/helpers/DefaultValidationEventHandler.class
+    javax/xml/bind/ParseConversionEvent.class
+    javax/xml/bind/annotation/XmlElement$DEFAULT.class
+    javax/xml/bind/ModuleUtil.class
+    javax/xml/bind/annotation/XmlRegistry.class
+    javax/xml/bind/annotation/XmlSchemaType.class
+    javax/xml/bind/TypeConstraintException.class
+    javax/xml/bind/ServiceLoaderUtil.class
+    javax/xml/bind/util/Messages.class
+    javax/xml/bind/annotation/XmlAttribute.class
+    javax/xml/bind/ValidationEventHandler.class
+    javax/xml/bind/annotation/XmlIDREF.class
+    javax/xml/bind/helpers/AbstractUnmarshallerImpl.class
+    javax/xml/bind/annotation/XmlAccessOrder.class
+    javax/xml/bind/PropertyException.class
+    javax/xml/bind/JAXBElement.class
+    javax/xml/bind/annotation/DomHandler.class
+    javax/xml/bind/annotation/XmlAttachmentRef.class
+    javax/xml/bind/util/JAXBResult.class
+    javax/xml/bind/JAXBPermission.class
+    javax/xml/bind/ContextFinder$5.class
+    META-INF/versions/9/javax/xml/bind/ModuleUtil.class
+    javax/xml/bind/annotation/W3CDomHandler.class
+    javax/xml/bind/Marshaller$Listener.class
+    javax/xml/bind/JAXBIntrospector.class
+    javax/xml/bind/JAXBException.class
+    javax/xml/bind/JAXBElement$GlobalScope.class
+    javax/xml/bind/annotation/adapters/HexBinaryAdapter.class
+    javax/xml/bind/annotation/XmlInlineBinaryData.class
+    javax/xml/bind/UnmarshallerHandler.class
+    javax/xml/bind/annotation/XmlMixed.class
+    javax/xml/bind/annotation/XmlAccessType.class
+    javax/xml/bind/UnmarshalException.class
+    javax/xml/bind/NotIdentifiableEvent.class
+    javax/xml/bind/annotation/XmlSchemaTypes.class
+    javax/xml/bind/helpers/ValidationEventImpl.class
+    javax/xml/bind/Element.class
+    javax/xml/bind/ContextFinder$2.class
+    javax/xml/bind/helpers/ParseConversionEventImpl.class
+    javax/xml/bind/GetPropertyAction.class
+    javax/xml/bind/annotation/XmlMimeType.class
+    javax/xml/bind/PrintConversionEvent.class
+    javax/xml/bind/ContextFinder$1.class
+    javax/xml/bind/JAXB.class
+    javax/xml/bind/Validator.class
+    javax/xml/bind/annotation/XmlElementRef.class
+    javax/xml/bind/annotation/XmlAnyAttribute.class
+    javax/xml/bind/annotation/XmlAccessorOrder.class
+    javax/xml/bind/JAXB$Cache.class
+    javax/xml/bind/JAXBContext.class
+    javax/xml/bind/util/ValidationEventCollector.class
+    javax/xml/bind/annotation/XmlSchemaType$DEFAULT.class
+    javax/xml/bind/annotation/XmlTransient.class
+    javax/xml/bind/annotation/XmlID.class
+    javax/xml/bind/annotation/XmlElementDecl$GLOBAL.class
+    javax/xml/bind/annotation/XmlElementDecl.class
+    javax/xml/bind/MarshalException.class
+    javax/xml/bind/ValidationEvent.class
+    javax/xml/bind/annotation/adapters/XmlJavaTypeAdapter.class
+    javax/xml/bind/annotation/XmlElement.class
+    javax/xml/bind/ContextFinder$3.class
+    javax/xml/bind/annotation/XmlElementRefs.class
+    javax/xml/bind/annotation/XmlSchema.class
+    javax/xml/bind/ValidationException.class
+    javax/xml/bind/annotation/XmlAccessorType.class
+    javax/xml/bind/annotation/adapters/NormalizedStringAdapter.class
+    javax/xml/bind/helpers/Messages.class
+    javax/xml/bind/DatatypeConverterImpl.class
+    javax/xml/bind/DatatypeConverterInterface.class
+    javax/xml/bind/annotation/XmlElements.class
+    javax/xml/bind/annotation/XmlList.class
+    javax/xml/bind/Binder.class
+    javax/xml/bind/annotation/XmlType.class
+    javax/xml/bind/Messages.class
+    javax/xml/bind/helpers/ValidationEventLocatorImpl.class
+    javax/xml/bind/attachment/AttachmentUnmarshaller.class
+    javax/xml/bind/ServiceLoaderUtil$ExceptionHandler.class
+    javax/xml/bind/annotation/adapters/XmlAdapter.class
+    javax/xml/bind/Unmarshaller$Listener.class
+    javax/xml/bind/attachment/AttachmentMarshaller.class
+    javax/xml/bind/DatatypeConverterImpl$CalendarFormatter.class
+    javax/xml/bind/JAXBContextFactory.class
+    javax/xml/bind/annotation/XmlRootElement.class
+    javax/xml/bind/util/JAXBSource$1.class
+    javax/xml/bind/annotation/adapters/XmlJavaTypeAdapters.class
+    javax/xml/bind/WhiteSpaceProcessor.class
+    javax/xml/bind/ContextFinder$4.class
+    javax/xml/bind/annotation/XmlEnumValue.class
+    javax/xml/bind/annotation/XmlType$DEFAULT.class
+    javax/xml/bind/helpers/PrintConversionEventImpl.class
+    javax/xml/bind/annotation/adapters/XmlJavaTypeAdapter$DEFAULT.class
+    javax/xml/bind/DataBindingException.class
+    javax/xml/bind/annotation/XmlElementWrapper.class
+    javax/xml/bind/ValidationEventLocator.class
+    javax/xml/bind/Marshaller.class
+    javax/xml/bind/helpers/NotIdentifiableEventImpl.class
+    javax/xml/bind/annotation/XmlAnyElement.class
+    javax/xml/bind/SchemaOutputResolver.class
+    javax/xml/bind/Unmarshaller.class
+    javax/xml/bind/annotation/adapters/CollapsedStringAdapter.class
+    javax/xml/bind/annotation/XmlElementRef$DEFAULT.class
+    javax/xml/bind/annotation/XmlSeeAlso.class
+    javax/xml/bind/DatatypeConverter.class
+    javax/xml/bind/util/JAXBSource.class
+    javax/xml/bind/annotation/XmlEnum.class
+    javax/xml/bind/annotation/XmlNsForm.class
+    javax/xml/bind/JAXBContext$1.class
+    javax/xml/bind/annotation/XmlNs.class
+    javax/xml/bind/helpers/AbstractMarshallerImpl.class
+
+  Found in:
+    org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1.1.redhat-00003:compile
+    jakarta.platform:jakarta.jakartaee-api:jar:8.0.0:provided
+  Duplicate classes:
+    javax/transaction/SystemException.class
+    javax/transaction/TransactionManager.class
+    javax/transaction/TransactionRolledbackException.class
+    javax/transaction/RollbackException.class
+    javax/transaction/NotSupportedException.class
+    javax/transaction/TransactionRequiredException.class
+    javax/transaction/HeuristicMixedException.class
+    javax/transaction/InvalidTransactionException.class
+    javax/transaction/Synchronization.class
+    javax/transaction/UserTransaction.class
+    javax/transaction/Status.class
+    javax/transaction/HeuristicCommitException.class
+    javax/transaction/TransactionSynchronizationRegistry.class
+    javax/transaction/Transaction.class
+    javax/transaction/HeuristicRollbackException.class
+
+  Found in:
+    jakarta.platform:jakarta.jakartaee-api:jar:8.0.0:provided
+    org.jboss.spec.javax.el:jboss-el-api_3.0_spec:jar:1.0.13.Final-redhat-00001:test
+  Duplicate classes:
+    javax/el/LambdaExpression.class
+    javax/el/ValueExpression.class
+    javax/el/MapELResolver.class
+    javax/el/PropertyNotFoundException.class
+    javax/el/FunctionMapper.class
+    javax/el/BeanNameResolver.class
+    javax/el/BeanNameELResolver.class
+    javax/el/ResourceBundleELResolver.class
+    javax/el/ListELResolver.class
+    javax/el/MethodInfo.class
+    javax/el/StandardELContext$LocalBeanNameResolver.class
+    javax/el/MethodExpression.class
+    javax/el/Expression.class
+    javax/el/BeanELResolver.class
+    javax/el/StaticFieldELResolver.class
+    javax/el/ELContext.class
+    javax/el/ImportHandler.class
+    javax/el/PropertyNotWritableException.class
+    javax/el/ELUtil$1.class
+    javax/el/MethodNotFoundException.class
+    javax/el/StandardELContext$DefaultFunctionMapper.class
+    javax/el/StandardELContext$1.class
+    javax/el/ELContextListener.class
+    javax/el/ExpressionFactory.class
+    javax/el/ELClass.class
+    javax/el/ELResolver.class
+    javax/el/CompositeELResolver.class
+    javax/el/ELManager.class
+    javax/el/EvaluationListener.class
+    javax/el/ELUtil.class
+    javax/el/ArrayELResolver.class
+    javax/el/StandardELContext.class
+    javax/el/VariableMapper.class
+    javax/el/ValueReference.class
+    javax/el/CompositeELResolver$CompositeIterator.class
+    javax/el/ELProcessor.class
+    javax/el/TypeConverter.class
+    javax/el/ELContextEvent.class
+    javax/el/StandardELContext$DefaultVariableMapper.class
+    javax/el/ELException.class
+    javax/el/FactoryFinder.class
+
+  Found in:
+    jakarta.platform:jakarta.jakartaee-api:jar:8.0.0:provided
+    org.jboss.spec.javax.interceptor:jboss-interceptors-api_1.2_spec:jar:1.0.1.Final-redhat-1:test
+  Duplicate classes:
+    javax/interceptor/InvocationContext.class
+    javax/interceptor/Interceptor.class
+    javax/interceptor/AroundConstruct.class
+    javax/interceptor/ExcludeClassInterceptors.class
+    javax/interceptor/AroundTimeout.class
+    javax/interceptor/Interceptor$Priority.class
+    javax/interceptor/AroundInvoke.class
+    javax/interceptor/InterceptorBinding.class
+    javax/interceptor/ExcludeDefaultInterceptors.class
+    javax/interceptor/Interceptors.class
+
+  Found in:
+    jakarta.xml.ws:jakarta.xml.ws-api:jar:2.3.3:provided
+    javax.xml.ws:jaxws-api:jar:2.3.0:compile
+  Duplicate classes:
+    javax/xml/ws/wsaddressing/W3CEndpointReference$Elements.class
+    javax/xml/ws/handler/HandlerResolver.class
+    javax/xml/ws/soap/SOAPBinding.class
+    javax/xml/ws/Response.class
+    javax/xml/ws/WebServicePermission.class
+    javax/xml/ws/handler/MessageContext$Scope.class
+    javax/xml/ws/spi/FactoryFinder$1.class
+    javax/xml/ws/WebServiceContext.class
+    javax/xml/ws/spi/http/HttpExchange.class
+    javax/xml/ws/handler/MessageContext.class
+    javax/xml/ws/EndpointReference.class
+    javax/xml/ws/spi/http/HttpHandler.class
+    javax/xml/ws/EndpointContext.class
+    javax/xml/ws/spi/ServiceDelegate.class
+    javax/xml/ws/WebEndpoint.class
+    javax/xml/ws/BindingProvider.class
+    javax/xml/ws/LogicalMessage.class
+    javax/xml/ws/spi/http/HttpContext.class
+    javax/xml/ws/WebFault.class
+    javax/xml/ws/wsaddressing/W3CEndpointReference$Address.class
+    javax/xml/ws/Action.class
+    javax/xml/ws/Service.class
+    javax/xml/ws/spi/ServiceLoaderUtil$ExceptionHandler.class
+    javax/xml/ws/Endpoint.class
+    javax/xml/ws/WebServiceClient.class
+    javax/xml/ws/RequestWrapper.class
+    javax/xml/ws/Dispatch.class
+    javax/xml/ws/handler/LogicalHandler.class
+    javax/xml/ws/RespectBinding.class
+    javax/xml/ws/WebServiceFeature.class
+    javax/xml/ws/spi/FactoryFinder.class
+    javax/xml/ws/Holder.class
+    javax/xml/ws/WebServiceRef.class
+    javax/xml/ws/AsyncHandler.class
+    javax/xml/ws/http/HTTPBinding.class
+    javax/xml/ws/handler/Handler.class
+    javax/xml/ws/handler/soap/SOAPMessageContext.class
+    javax/xml/ws/soap/AddressingFeature$Responses.class
+    javax/xml/ws/spi/Provider.class
+    javax/xml/ws/soap/MTOM.class
+    javax/xml/ws/handler/soap/SOAPHandler.class
+    javax/xml/ws/Provider.class
+    javax/xml/ws/soap/AddressingFeature.class
+    javax/xml/ws/handler/PortInfo.class
+    javax/xml/ws/spi/Invoker.class
+    javax/xml/ws/wsaddressing/package-info.class
+    javax/xml/ws/Service$Mode.class
+    javax/xml/ws/soap/SOAPFaultException.class
+    javax/xml/ws/RespectBindingFeature.class
+    javax/xml/ws/ResponseWrapper.class
+    javax/xml/ws/http/HTTPException.class
+    javax/xml/ws/handler/LogicalMessageContext.class
+    javax/xml/ws/Binding.class
+    javax/xml/ws/WebServiceException.class
+    javax/xml/ws/wsaddressing/W3CEndpointReferenceBuilder.class
+    javax/xml/ws/spi/WebServiceFeatureAnnotation.class
+    javax/xml/ws/wsaddressing/W3CEndpointReference.class
+    javax/xml/ws/ProtocolException.class
+    javax/xml/ws/ServiceMode.class
+    javax/xml/ws/FaultAction.class
+    javax/xml/ws/WebServiceRefs.class
+    javax/xml/ws/soap/Addressing.class
+    javax/xml/ws/spi/ServiceLoaderUtil.class
+    javax/xml/ws/WebServiceProvider.class
+    javax/xml/ws/BindingType.class
+    javax/xml/ws/soap/MTOMFeature.class
+
+  Found in:
+    javax.activation:javax.activation-api:jar:1.2.0:compile
+    jakarta.activation:jakarta.activation-api:jar:1.2.2:provided
+  Duplicate classes:
+    javax/activation/DataContentHandlerFactory.class
+    javax/activation/SecuritySupport$2.class
+    javax/activation/MimeTypeParameterList.class
+    javax/activation/DataSourceDataContentHandler.class
+    javax/activation/CommandInfo$Beans$1.class
+    javax/activation/DataHandler$1.class
+    javax/activation/UnsupportedDataTypeException.class
+    javax/activation/DataHandler.class
+    javax/activation/CommandInfo$Beans.class
+    javax/activation/DataContentHandler.class
+    javax/activation/CommandMap.class
+    javax/activation/MimeTypeParseException.class
+    javax/activation/ActivationDataFlavor.class
+    javax/activation/SecuritySupport$3.class
+    javax/activation/ObjectDataContentHandler.class
+    javax/activation/SecuritySupport$1.class
+    javax/activation/DataSource.class
+    javax/activation/SecuritySupport.class
+    javax/activation/MimetypesFileTypeMap$1.class
+    javax/activation/DataHandlerDataSource.class
+    javax/activation/MailcapCommandMap$1.class
+    javax/activation/MimetypesFileTypeMap.class
+    javax/activation/CommandInfo.class
+    javax/activation/MailcapCommandMap.class
+    javax/activation/SecuritySupport$4.class
+    javax/activation/FileDataSource.class
+    javax/activation/SecuritySupport$5.class
+    javax/activation/CommandObject.class
+    javax/activation/MimeType.class
+    javax/activation/FileTypeMap.class
+    javax/activation/URLDataSource.class
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 53.049 s
+[INFO] Finished at: 2020-08-18T23:16:40+05:30
+[INFO] Final Memory: 37M/127M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-enforcer-plugin:3.0.0-M3:enforce (enforce) on project customer-contact-history-system-mce: Some Enforcer rules have failed. Look above for specific messages explaining why the rule failed. -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<pluginGroups>
+		<pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+        <pluginGroup>org.codehaus.mojo</pluginGroup>
+		<pluginGroup>org.jacoco</pluginGroup>
+	</pluginGroups>
+
+	<mirrors>
+		<mirror>
+			<id>absa</id>
+			<name>Absa Nexus Proxy</name>
+			<mirrorOf>*,!aro</mirrorOf>
+			<url>https://nexus-agl.absa.co.za/repository/maven-public/</url>
+		</mirror>
+	</mirrors>
+  	<servers>
+    	<server>
+      		<id>aro</id>
+      		<username>${USR}</username>
+      		<password>${PWD}</password>
+    	</server>
+  	</servers>
+	<profiles>
+		<profile>
+			<id>aro</id>
+			<repositories>
+				<repository>
+					<id>aro</id>
+					<name>ARO</name>
+					<url>https://nexus-agl.absa.co.za/repository/ARO/</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>aro</id>
+					<name>ARO</name>
+					<url>https://nexus-agl.absa.co.za/repository/ARO/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+  
+
+	<activeProfiles>
+		<activeProfile>aro</activeProfile>
+	</activeProfiles>
+</settings>

@@ -1,0 +1,180 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: dockerbuildtemplate
+parameters:
+- name: APP_NAME
+  description: The name assigned to all of the application objects defined in this template.
+  displayName: Application Name
+  required: true
+- name: PROP_NAME
+  description: Name of properties file for dev environment.
+  displayName: Properties file Name
+  required: true  
+ 
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APP_NAME}
+      template: dockerbuildtemplate
+    name: ${APP_NAME}
+  spec: {}
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ${APP_NAME}
+      template: dockerbuildtemplate
+    name: ${APP_NAME}-docker
+    
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      dockerfile: |-
+        FROM wildfly
+        ADD ${APP_NAME}.war /opt/jboss/wildfly/standalone/deployments/
+        ADD standalone.xml /opt/jboss/wildfly/standalone/configuration/
+        
+      binary: {}
+      type: Docker
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: wildfly:latest
+      type: Docker
+    triggers: []
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APP_NAME}
+      template: dockerbuildtemplate
+    name: ${APP_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APP_NAME}
+      deploymentconfig: ${APP_NAME}
+    strategy:
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${APP_NAME}
+          deploymentconfig: ${APP_NAME}
+         
+      spec:
+        containers:
+        - env:
+           - name: JAVA_OPTS
+             value: >-
+                -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+                -Djava.net.preferIPv4Stack=true   
+                -Djboss.modules.system.pkgs=org.jboss.byteman
+                -Djava.awt.headless=true
+                -Djavax.net.ssl.trustStore=/etc/cacerts/cacerts
+                -Dproperties.path=/etc/config/${PROP_NAME}.properties
+          image: ${APP_NAME}:latest
+          imagePullPolicy: Always
+          name: ${APP_NAME}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: /etc/cacerts
+              name: ${APP_NAME}-truststore
+              readonly: true
+              
+            - mountPath: /etc/config
+              name: ${APP_NAME}-properties
+              readOnly: true  
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: ${APP_NAME}-truststore
+          secret:
+            defaultMode: 420
+            secretName: cacertmce
+        - configMap:
+            defaultMode: 420
+            name: ${PROP_NAME}-pp
+          name: ${APP_NAME}-properties
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APP_NAME}
+        from:
+          kind: ImageStreamTag
+          name: ${APP_NAME}:latest
+      type: ImageChange
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+
+    labels:
+      app: ${APP_NAME}
+      template: dockerbuildtemplate
+    name: ${APP_NAME}
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ${APP_NAME}
+      deploymentconfig: ${APP_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${APP_NAME}
+    labels:
+      app: ${APP_NAME}
+      template: dockerbuildtemplate
+  spec:
+    to:
+      kind: Service
+      name: ${APP_NAME}
+      weight: 100
+    port:
+      targetPort: 8080-tcp
+    wildcardPolicy: None

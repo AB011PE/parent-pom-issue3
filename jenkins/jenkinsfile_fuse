@@ -1,0 +1,169 @@
+// Defining application name 
+      def appName="contact-history-pp"  
+      def git_repo="https://ab0120w@bitbucket-agl.absa.co.za/scm/amap/customer-contact-history-system-mce.git"
+      def branchName="feature/customer-contact-history-system-mce-updt-parent-pom"
+      def gitCredentialId="1b2aef0e-a7e8-4ac6-9e50-efd1e205f9db"
+      
+// Template for  maven slave with mvn-3.6.3 and java 11 image 
+podTemplate(label: "$appName-pod", 
+             cloud: "openshift", 
+             inheritFrom: "maven",
+             containers: [
+                containerTemplate(name: "jnlp", 
+                       image: "docker-registry.default.svc:5000/amol-devops/jenkins-maven-agent-custom-jdk11-mvn3.6.3:test1", 
+                       resourceRequestMemory: "1024Mi", 
+                       resourceLimitMemory: "2048Mi", 
+                       envVars: [
+                envVar(key: "CONTAINER_HEAP_PERCENT", value: "0.50"),
+                envVar(key: "GIT_SSL_NO_VERIFY", value: "true"), // will be removed as we will use ssh programmatic access to git repo 
+				envVar(key: "MAVEN_OPTS", value: "-Xmx1024m")
+               
+				
+    ])
+]){
+
+//starting agent node 
+  node("$appName-pod") {
+  
+//git checkout on slave node              
+            stage("Checkout") {
+			
+			               git branch: "$branchName" , credentialsId: "$gitCredentialId", url: "$git_repo"
+
+                           withCredentials([usernamePassword(credentialsId: '1b2aef0e-a7e8-4ac6-9e50-efd1e205f9db', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
+                           sh "git clone https://${USER}:${PASSWORD}@bitbucket-agl.absa.co.za/scm/~ab0120w/devops.git"} 
+                       }
+// mvn configuration stage creating custom truststore and importing Nexus and SonarQube certificates
+            stage("mvnConfig")	{
+			    sh '''	    mkdir ~/.m2
+        					cp  ./source_dir/configuration/settings.xml ~/.m2/settings.xml 
+                                                  
+		           '''			
+            }	
+                      
+			stage("Test"){
+                    sh"mvn -Djavax.net.ssl.trustStore=./devops/certs/.cacerts/cacerts test -Pfuse"
+                    }	
+				  
+//parallel stages for sonarQube analysis and junit tests 		  
+  
+	//		stage("SonarQube"){
+      //              withSonarQubeEnv(credentialsId: 'Sonar') {
+        //            sh "  mvn -e clean package sonar:sonar -Pfuse,!jdk11,!web,!jax-ws -Dsonar.exclusions=**/barclays/**/*.java,**/model/**/*.java -Djavax.net.ssl.trustStore=./devops/certs/.cacerts/cacerts -Dsonar.projectKey=ARO-${appName} -Dsonar.projectName=ARO-${appName} -Dsonar.host.url=https://sonarqube-prod.absacorp.com -Dsonar.login=b125342850d7f355b3d44b96c5bf4e62a5f0bea0"
+		               
+          //          }
+     
+            //      } 
+		
+// Quality Gate check 			
+		/*	stage("Quality Gate"){
+                    timeout(time: 1, unit: 'HOURS') { 
+                    def qg= readJSON text: sh(script: "curl --cacert ./devops/certs/sonarqubeprod.cer https://sonarqube-prod.absacorp.com/api/qualitygates/project_status?projectKey=ARO-${appName} -v -u b125342850d7f355b3d44b96c5bf4e62a5f0bea0 ", returnStdout: true)
+                    if (qg.projectStatus.status != 'OK') {
+                    echo"quality gate status: ${qg.projectStatus.status}"
+                    error "Pipeline aborted due to quality gate failure: ${qg.projectStatus.status}"
+                    
+                    }
+                    else
+                    echo"quality gate status: ${qg.projectStatus.status}"
+
+                    }
+     
+                  } */
+				  
+// mvn packaging to target/<app.war>				  
+			stage("Build WAR") {
+                    sh "mvn -e  -Djavax.net.ssl.trustStore=./devops/certs/.cacerts/cacerts clean package -Pfuse,jdk11,jax-ws,development,!wildfly-home,!wildfly-start-or-download,!wildfly-jpa,!wildfly,!galleon-resources,!galleon,!openshift,!deltaspike-data"
+                    sh "mv ./config/standalone.xml ./target"
+                 
+                   
+                  }	
+
+// deploying artifacts on nexus repo				  
+      		//stage("Nexus upload") {
+               //     withCredentials([usernamePassword(credentialsId: 'rathohit', passwordVariable: 'PASS', usernameVariable: 'USR')]) {
+               //     sh '''mvn -Djavax.net.ssl.trustStore=./devops/certs/.cacerts/cacerts -DaltDeploymentRepository=aro::default::https://nexus-agl.absa.co.za/repository/ARO/ -DUSR="$USR" -DPWD="$PASS" -e deploy -Pfuse,!jdk11,!web,!jax-ws'''
+                //    }
+              //    } 
+          /*      stage("creating configmap")
+                  { 
+                  sh'''
+                      chmod +x ./devops/scripts/deleteconfigmap.sh
+                      chmod +x ./devops/scripts/createconfigmap.sh
+                  '''
+                  sh"./devops/scripts/deleteconfigmap.sh ${appName}"
+                  sh"./devops/scripts/createconfigmap.sh ${appName}"
+                  
+                  }*/
+//stage to process Openshift template
+            stage("Processing OStemplate"){
+				   	openshift.withProject('amol-api-dev') {
+                        def err =  sh( returnStdout: true, script: "oc get dc -l app=${appName} -n amol-api-dev 2> test && cat test").trim()
+                        if(err.equals("No resources found.")){
+                        echo "No resources available creating resources"
+						def prop_name= sh( returnStdout: true, script: "ls src/main/resources/properties/dev/ | cut -d'.' -f1").trim()
+						sh "oc process -f ./devops/template/ostemplate.yml -p APP_NAME=${appName} -p PROP_NAME=${prop_name} |oc create -f- -n amol-api-dev"
+						}
+						else {  
+					     echo "service is already deployed proceeding with the Build Image"
+						 }
+                    }						 
+			}			
+   		 
+// building App image using Openshift build config		 
+            stage("Build Image") {
+			      dir('./target') {
+                  
+                
+	                def status = sh(returnStdout: true, script: "oc start-build ${appName}-docker --from-dir . -n amol-api-dev")
+
+                    def result = status.split("\n").find{ it.matches("^build.*started") }
+                    
+                    if(!result) {
+                      echo "ERROR: No started build found for ${appName}"
+                      currentBuild.result = 'FAILURE'
+                      return
+                    }
+                    
+                    // result can be:
+                    // - build "build-name" started
+                    // - build build.build.openshift.io/build-name started
+                    // - build "build.build.openshift.io/build-name" started
+                    // Goal is to isolate "build-name"
+                    def startedBuild = result.replaceAll("build [^0-9a-zA-Z]*", "").replaceAll("[^0-9a-zA-Z]* started", "").replaceFirst("^.*/", "")
+                    echo "Build ${startedBuild} has started. Now watching it ..."
+                    
+                    timeout(time: 30, unit: 'MINUTES') {
+                      openshift.withCluster() {
+                        openshift.withProject('amol-api-dev') {
+                          def build = openshift.selector('builds', "${startedBuild}")
+                          build.untilEach {
+                            def object = it.object()
+                            if(object.status.phase == "Failed") {
+                              error("Build ${startedBuild} failed")
+                            }
+                            return object.status.phase == "Complete"
+                          }
+                        }
+                      }  
+                    }
+	      
+                   }
+                  }
+				  
+// Deploying application image on Openshift dev namespace				  
+            stage("Deploy to dev") {
+                    openshift.withCluster() {
+                      openshift.withProject('amol-api-dev') {
+                        def dc = openshift.selector('dc', "${appName}")
+					    dc.rollout().status()
+		
+                      }
+                    }
+                  }
+                }
+          
+}
+         
+
+

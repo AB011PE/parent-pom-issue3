@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation xmlns="urn:jboss:galleon:provisioning:3.0">
+  <feature-pack location="wildfly@maven(org.jboss.universe:community-universe)#${wildfly.version}">
+    <default-configs inherit="false"/>
+    <packages inherit="false">
+     <!--  <exclude name="org.jboss.resteasy.resteasy-atom-provider"/>
+      <exclude name="org.jboss.resteasy.resteasy-crypto"/>
+      <exclude name="org.jboss.resteasy.resteasy-jackson-provider"/>
+      <exclude name="org.jboss.resteasy.resteasy-jackson2-provider"/>
+      <exclude name="org.jboss.resteasy.resteasy-jaxb-provider"/>
+      <exclude name="org.jboss.resteasy.resteasy-jettison-provider"/>
+      <exclude name="org.jboss.resteasy.resteasy-jsapi"/>
+      <exclude name="org.jboss.resteasy.resteasy-multipart-provider"/>
+      <exclude name="org.jboss.resteasy.resteasy-spring"/>
+      <exclude name="org.jboss.resteasy.resteasy-yaml-provider"/> -->
+    </packages>
+  </feature-pack>
+  <config model="standalone" name="standalone.xml">
+    <layers>
+      <include name="cdi"/>
+      <include name="bean-validation"/>
+      <include name="jaxrs"/>
+<!--       <include name="jpa"/> -->
+      <include name="observability"/>
+      <include name="microprofile-fault-tolerance"/>
+      <include name="microprofile-jwt"/>
+      <include name="microprofile-openapi"/> 
+      <include name="core-management"/>
+      <include name="deployment-scanner"/>
+      <include name="logging"/>
+      <include name="core-tools"/> 
+    </layers>
+  </config>
+  <options>
+    <option name="optional-packages" value="passive+"/>
+  </options>
+</installation>
+
